@@ -7,18 +7,40 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from models import User
 from database import get_session
+from dotenv import load_dotenv
+import os
+import re
+load_dotenv()
 
-SECRET_KEY = "your-secret-key"  # Change this in production
-ALGORITHM = "HS256"
+SECRET_KEY = os.getenv("SECRET_KEY", "yoursecretkey")
+ALGORITHM = os.getenv("ALGORITHM", "HS256")
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 http_bearer = HTTPBearer()
 
-def hash_password(password: str) -> str:
+def validate_password_strength(password):
+    if len(password) < 8:
+        return False
+    
+    # Check for alphabets (both uppercase and lowercase)
+    if not re.search(r'[a-z]', password) or not re.search(r'[A-Z]', password):
+        return False
+    
+    # Check for numbers
+    if not re.search(r'\d', password):
+        return False
+    
+    # Check for special characters
+    if not re.search(r'[!@#$%^&*()_+\-=\[\]{};\':"\\|,.<>\/?]', password):
+        return False
+    
+    return True
+
+def hash_password(password):
     return pwd_context.hash(password)
 
-def verify_password(plain_password: str, hashed_password: str) -> bool:
+def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
