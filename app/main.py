@@ -30,6 +30,13 @@ def register(request: Request, user: UserCreate = None, session: Session = Depen
         if user is None or not user.username or not user.password or not user.role:
             raise HTTPException(status_code=422, detail="Missing required user registration fields.")
         
+        # Validate role
+        if user.role not in ["admin", "user"]:
+            raise HTTPException(
+                status_code=406,
+                detail="Role must be 'admin' or 'user'"
+            )
+        
         # Validate password strength
         if not validate_password_strength(user.password):
             raise HTTPException(

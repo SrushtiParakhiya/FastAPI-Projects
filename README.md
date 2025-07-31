@@ -2,6 +2,14 @@
 
 A robust FastAPI application with JWT authentication, role-based access control (RBAC), and project management capabilities. Features secure password validation, comprehensive error handling, and support for both local development and cloud deployment.
 
+## 🌐 Live Demo
+
+**API Documentation**: https://codingsphere-crud-assignment.onrender.com/docs
+
+**Base URL**: https://codingsphere-crud-assignment.onrender.com
+
+> **Note**: The API is deployed on Render and may take a few seconds to wake up on the first request.
+
 ## 🚀 Features
 
 - 🔐 **JWT-based authentication** with secure token management
@@ -84,12 +92,6 @@ DATABASE_URL="postgresql://username:password@localhost:5432/database_name"
 # JWT Configuration
 SECRET_KEY="your-super-secret-key-change-this-in-production"
 ALGORITHM="HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-
-# Server Configuration
-HOST="127.0.0.1"
-PORT=8000
-DEBUG=True
 ```
 
 #### 5. Database Setup
@@ -112,8 +114,13 @@ The API will be available at: http://127.0.0.1:8000
 
 ## 📚 API Documentation
 
+### Local Development
 - **Interactive API Docs**: http://127.0.0.1:8000/docs#
 - **ReDoc Documentation**: http://127.0.0.1:8000/redoc
+
+### Production (Deployed)
+- **Interactive API Docs**: https://codingsphere-crud-assignment.onrender.com/docs
+- **ReDoc Documentation**: https://codingsphere-crud-assignment.onrender.com/redoc
 
 ## 🔐 API Endpoints
 
@@ -146,167 +153,43 @@ When registering a user, passwords must meet these criteria:
 - `MyPass@2024`
 - `Secure#Pass1`
 
-## ☁️ Render Deployment
+## 🧪 Testing the Deployed API
 
-### 1. Prepare for Deployment
+### Quick Test with curl
 
-#### Update Environment Variables for Production
-Create a production `.env` file or use Render's environment variables:
-
-```env
-# Production Database (Render PostgreSQL)
-DATABASE_URL="postgresql://username:password@host:port/database_name"
-
-# Production JWT Settings
-SECRET_KEY="your-production-secret-key"
-ALGORITHM="HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-
-# Production Server Settings
-HOST="0.0.0.0"
-PORT=8000
-DEBUG=False
-```
-
-### 2. Deploy to Render
-
-#### Step 1: Create a New Web Service
-1. Go to [Render Dashboard](https://dashboard.render.com)
-2. Click "New +" → "Web Service"
-3. Connect your GitHub repository
-
-#### Step 2: Configure the Service
-- **Name**: `fastapi-jwt-auth` (or your preferred name)
-- **Environment**: `Python 3`
-- **Build Command**: `pip install -r requirements.txt`
-- **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
-
-#### Step 3: Set Environment Variables
-In Render dashboard, add these environment variables:
-
-```env
-DATABASE_URL=postgresql://username:password@host:port/database_name
-SECRET_KEY=your-production-secret-key
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-```
-
-#### Step 4: Deploy
-1. Click "Create Web Service"
-2. Render will automatically deploy your application
-3. Your API will be available at: `https://your-app-name.onrender.com`
-
-### 3. Database Setup on Render
-
-#### Option A: Use Render PostgreSQL
-1. Create a new PostgreSQL database in Render
-2. Copy the connection string to your environment variables
-3. The application will automatically create tables
-
-#### Option B: Use External Database
-1. Configure your external PostgreSQL database
-2. Update `DATABASE_URL` in Render environment variables
-
-## 🔧 Development
-
-### Adding New Features
-1. Add endpoints in `main.py`
-2. Update models in `models.py` if needed
-3. Add schemas in `schemas.py`
-4. Test locally before deploying
-
-### Database Migrations
-- The application uses SQLModel which automatically creates tables
-- For schema changes, update models and redeploy
-
-### Error Handling
-All endpoints include comprehensive error handling:
-- ✅ Try-catch blocks
-- ✅ Structured error responses
-- ✅ Request validation
-- ✅ Detailed logging
-
-## 🐛 Troubleshooting
-
-### Local Development Issues
-
-#### Database Connection Problems
+#### 1. Register a new user
 ```bash
-# Check if PostgreSQL is running
-sudo service postgresql status  # Linux
-brew services list | grep postgresql  # macOS
-
-# Verify connection string
-echo $DATABASE_URL
+curl -X POST "https://codingsphere-crud-assignment.onrender.com/register" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "testuser",
+    "password": "TestPass123!",
+    "role": "user"
+  }'
 ```
 
-#### Import Errors
+#### 2. Login to get JWT token
 ```bash
-# Ensure virtual environment is activated
-source .venv/bin/activate
-
-# Reinstall dependencies
-pip install -r requirements.txt
+curl -X POST "https://codingsphere-crud-assignment.onrender.com/login" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "testuser",
+    "password": "TestPass123!"
+  }'
 ```
 
-#### Port Already in Use
+#### 3. Use the token to access protected endpoints
 ```bash
-# Kill process on port 8000
-lsof -ti:8000 | xargs kill -9
-
-# Or use different port
-uvicorn main:app --reload --port 8001
+# Replace YOUR_JWT_TOKEN with the token from login response
+curl -X GET "https://codingsphere-crud-assignment.onrender.com/projects" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
-### Render Deployment Issues
+### Testing with Postman or Browser
 
-#### Build Failures
-- Check build logs in Render dashboard
-- Verify `requirements.txt` is in the correct directory
-- Ensure all dependencies are listed
+1. Visit https://codingsphere-crud-assignment.onrender.com/docs#
+2. Use the interactive Swagger UI to test all endpoints
+3. Register a user first, then login to get your JWT token
+4. Click the "Authorize" button and enter your token
+5. Test all the protected endpoints
 
-#### Runtime Errors
-- Check application logs in Render dashboard
-- Verify environment variables are set correctly
-- Ensure database connection string is valid
-
-#### Database Connection Issues
-- Verify PostgreSQL service is running
-- Check connection string format
-- Ensure database exists and is accessible
-
-## 📝 Environment Variables Reference
-
-| Variable | Description | Example | Required |
-|----------|-------------|---------|----------|
-| `DATABASE_URL` | Database connection string | `postgresql://user:pass@host:port/db` | Yes |
-| `SECRET_KEY` | JWT secret key | `your-secret-key` | Yes |
-| `ALGORITHM` | JWT algorithm | `HS256` | No (default) |
-| `ACCESS_TOKEN_EXPIRE_MINUTES` | Token expiration | `30` | No (default) |
-| `HOST` | Server host | `0.0.0.0` | No (default) |
-| `PORT` | Server port | `8000` | No (default) |
-| `DEBUG` | Debug mode | `False` | No (default) |
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-If you encounter any issues:
-1. Check the troubleshooting section above
-2. Review the application logs
-3. Create an issue in the GitHub repository
-4. Contact the maintainers
-
----
-
-**Happy Coding! 🚀**
