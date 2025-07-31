@@ -10,6 +10,25 @@ A robust FastAPI application with JWT authentication, role-based access control 
 
 > **Note**: The API is deployed on Render and may take a few seconds to wake up on the first request.
 
+## 🎥 Project Demo Video
+
+**Watch the complete setup and usage demonstration:**
+
+[![FastAPI Project Demo](video/usage_explanation.mp4)]
+
+**Video Contents:**
+- ✅ Complete project setup and configuration
+- ✅ Local development environment setup
+- ✅ Interactive API testing with Swagger UI
+- ✅ User registration and authentication
+- ✅ JWT token-based security demonstration
+- ✅ Role-based access control (Admin/User)
+- ✅ Project CRUD operations
+- ✅ Error handling and validation
+- ✅ Production deployment showcase
+
+> **Duration**: ~18 minutes | **Format**: MP4
+
 ## 🚀 Features
 
 - 🔐 **JWT-based authentication** with secure token management
