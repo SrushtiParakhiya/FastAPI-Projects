@@ -3,10 +3,10 @@ import re
 from fastapi import FastAPI, Depends, HTTPException, status, Request
 from sqlmodel import Session, select
 from typing import List
-from models import User, Project
-from schemas import UserCreate, UserRead, ProjectCreate, ProjectRead
-from database import engine, get_session
-from auth import hash_password, verify_password, create_access_token, get_current_user, require_admin, require_user, validate_password_strength
+from .models import User, Project
+from .schemas import UserCreate, UserRead, ProjectCreate, ProjectRead
+from .database import engine, get_session
+from .auth import hash_password, verify_password, create_access_token, get_current_user, require_admin, require_user, validate_password_strength
 from pydantic import BaseModel, ValidationError
 
 # Configure logging

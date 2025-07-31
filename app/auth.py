@@ -5,8 +5,8 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from models import User
-from database import get_session
+from .models import User
+from .database import get_session
 from dotenv import load_dotenv
 import os
 import re
