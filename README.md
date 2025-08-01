@@ -4,9 +4,9 @@ A robust FastAPI application with JWT authentication, role-based access control 
 
 ## 🌐 Live Demo
 
-**API Documentation**: https://codingsphere-crud-assignment.onrender.com/docs
+**API Documentation**: https://codingsphere-crud-assignment.onrender.com/docs#
 
-**Base URL**: https://codingsphere-crud-assignment.onrender.com
+**Base URL**: https://codingsphere-crud-assignment.onrender.com/
 
 > **Note**: The API is deployed on Render and may take a few seconds to wake up on the first request.
 
