@@ -14,7 +14,7 @@ A robust FastAPI application with JWT authentication, role-based access control 
 
 **Watch the complete setup and usage demonstration:**
 
-[![FastAPI Project Demo](video/usage_explanation.mp4)]
+[![FastAPI Project Demo](Video/usage_explanation.mp4)]
 
 **Video Contents:**
 - ✅ Complete project setup and configuration
